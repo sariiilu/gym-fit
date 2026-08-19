@@ -11,17 +11,24 @@ async function loadWeightChart(canvasId) {
       datasets: [{
         label: 'Gewicht (kg)',
         data: data.map(d => d.weight_kg),
-        borderColor: '#3c6e52',
-        backgroundColor: 'rgba(60,110,82,0.1)',
-        tension: 0.25,
+        borderColor: '#3f7659',
+        backgroundColor: 'rgba(63,118,89,0.10)',
+        borderWidth: 2.5,
+        tension: 0.35,
         fill: true,
         pointRadius: 3,
+        pointBackgroundColor: '#3f7659',
+        pointBorderColor: '#ffffff',
+        pointBorderWidth: 2,
       }]
     },
     options: {
       responsive: true,
       plugins: { legend: { display: false } },
-      scales: { y: { beginAtZero: false } }
+      scales: {
+        y: { beginAtZero: false, grid: { color: '#ecefe8' }, ticks: { font: { family: 'JetBrains Mono', size: 11 } } },
+        x: { grid: { display: false }, ticks: { font: { family: 'JetBrains Mono', size: 10 } } }
+      }
     }
   });
 }
@@ -56,17 +63,24 @@ async function renderExerciseChart(canvasId, exerciseName) {
       datasets: [{
         label: 'Gewicht (kg)',
         data: data.map(d => d.gewicht_kg),
-        borderColor: '#2b4f3b',
-        backgroundColor: 'rgba(43,79,59,0.1)',
-        tension: 0.25,
+        borderColor: '#c98a4b',
+        backgroundColor: 'rgba(201,138,75,0.10)',
+        borderWidth: 2.5,
+        tension: 0.35,
         fill: true,
         pointRadius: 3,
+        pointBackgroundColor: '#c98a4b',
+        pointBorderColor: '#ffffff',
+        pointBorderWidth: 2,
       }]
     },
     options: {
       responsive: true,
       plugins: { legend: { display: false } },
-      scales: { y: { beginAtZero: false } }
+      scales: {
+        y: { beginAtZero: false, grid: { color: '#ecefe8' }, ticks: { font: { family: 'JetBrains Mono', size: 11 } } },
+        x: { grid: { display: false }, ticks: { font: { family: 'JetBrains Mono', size: 10 } } }
+      }
     }
   });
 }

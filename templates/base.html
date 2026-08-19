@@ -3,20 +3,29 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{% block title %}Fitness Tracker{% endblock %}</title>
+<title>{% block title %}Fließ{% endblock %}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-<body>
+<body class="{{ 'is-authed' if session.get('authed') else 'is-guest' }}">
+
 {% if session.get('authed') %}
+<div class="ambient-blob blob-a" aria-hidden="true"></div>
+<div class="ambient-blob blob-b" aria-hidden="true"></div>
+
 <header class="topbar">
-  <div class="brand">🏋️ Fitness Tracker</div>
-  <nav>
-    <a href="{{ url_for('dashboard') }}">Dashboard</a>
-    <a href="{{ url_for('sessions_list') }}">Trainings</a>
-    <a href="{{ url_for('session_new') }}">+ Training</a>
-    <a href="{{ url_for('progress') }}">Fortschritt</a>
-    <a href="{{ url_for('logout') }}">Logout</a>
+  <a class="brand" href="{{ url_for('dashboard') }}">
+    <span class="brand-mark">Fließ</span>
+  </a>
+  <nav class="pill-nav">
+    <a href="{{ url_for('dashboard') }}" class="{{ 'active' if request.endpoint == 'dashboard' }}">Dashboard</a>
+    <a href="{{ url_for('sessions_list') }}" class="{{ 'active' if request.endpoint in ['sessions_list','session_detail'] }}">Trainings</a>
+    <a href="{{ url_for('session_new') }}" class="{{ 'active' if request.endpoint == 'session_new' }}">+ Training</a>
+    <a href="{{ url_for('progress') }}" class="{{ 'active' if request.endpoint == 'progress' }}">Fortschritt</a>
   </nav>
+  <a class="logout-link" href="{{ url_for('logout') }}">Logout</a>
 </header>
 {% endif %}
 

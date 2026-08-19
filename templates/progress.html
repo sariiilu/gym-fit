@@ -1,7 +1,8 @@
 {% extends "base.html" %}
-{% block title %}Fortschritt{% endblock %}
+{% block title %}Fortschritt · Fließ{% endblock %}
 {% block content %}
-<h1>Fortschritt</h1>
+<h1><em>Fortschritt</em> im Blick</h1>
+<p class="muted">Werte statt Momentaufnahmen — der Trend zählt, nicht ein einzelner Tag.</p>
 
 <section class="section">
   <h2>Neuer Gewichtseintrag</h2>
@@ -16,15 +17,19 @@
 
 <section class="section">
   <h2>Gewichtsverlauf</h2>
-  <canvas id="weightChart" height="90"></canvas>
+  <div class="chart-card">
+    <canvas id="weightChart" height="90"></canvas>
+  </div>
 </section>
 
 <section class="section">
   <h2>Kraft-Entwicklung pro Übung</h2>
-  <label>Übung auswählen
-    <select id="exerciseSelect"></select>
+  <label class="muted" style="display:block; margin-bottom:10px;">Übung auswählen
+    <select id="exerciseSelect" style="margin-top:6px; padding:9px 12px; border-radius:12px; border:1px solid var(--border); font-family:var(--font-body);"></select>
   </label>
-  <canvas id="exerciseChart" height="90"></canvas>
+  <div class="chart-card">
+    <canvas id="exerciseChart" height="90"></canvas>
+  </div>
 </section>
 
 <section class="section">
@@ -35,10 +40,10 @@
     <tbody>
       {% for r in rows|reverse %}
       <tr>
-        <td>{{ r['date'] }}</td>
-        <td>{{ r['weight_kg'] or '–' }}</td>
-        <td>{{ r['bodyfat_pct'] or '–' }}</td>
-        <td>{{ r['notes'] or '–' }}</td>
+        <td class="mono">{{ r['Datum'] }}</td>
+        <td class="mono">{{ r['Gewicht (kg)'] or '–' }}</td>
+        <td class="mono">{{ r['Körperfett (%)'] or '–' }}</td>
+        <td>{{ r['Notizen'] or '–' }}</td>
       </tr>
       {% endfor %}
     </tbody>

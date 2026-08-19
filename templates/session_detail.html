@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}{{ s['Session'] }}{% endblock %}
+{% block title %}{{ s['Session'] }} · Fließ{% endblock %}
 {% block content %}
 <div class="section-head">
   <h1>{{ s['Session'] }}</h1>
@@ -9,15 +9,15 @@
   </form>
 </div>
 
-<p class="muted">
+<p class="muted mono">
   {{ s['Datum'] }}
-  {% for z in s['Ziel'] %}<span class="badge">{{ z }}</span>{% endfor %}
   {% if s['Dauer (Min)'] %} · {{ s['Dauer (Min)']|int }} min{% endif %}
   {% if s['RPE gesamt'] %} · RPE {{ s['RPE gesamt']|int }}{% endif %}
   {% if s['Schlaf (Std)'] %} · Schlaf {{ s['Schlaf (Std)'] }} Std{% endif %}
 </p>
+<p>{% for z in s['Ziel'] %}<span class="badge">{{ z }}</span>{% endfor %}</p>
 
-{% if s['Gewicht (kg)'] %}<p><strong>Körpergewicht am Trainingstag:</strong> {{ s['Gewicht (kg)'] }} kg</p>{% endif %}
+{% if s['Gewicht (kg)'] %}<p><strong>Körpergewicht am Trainingstag:</strong> <span class="mono">{{ s['Gewicht (kg)'] }} kg</span></p>{% endif %}
 {% if s['Notizen'] %}<p><strong>Notizen:</strong> {{ s['Notizen'] }}</p>{% endif %}
 
 <p><a class="btn-link" href="{{ s['url'] }}" target="_blank">In Notion öffnen →</a></p>
@@ -33,9 +33,9 @@
     <tr>
       <td>{{ e['Übung'] }}</td>
       <td>{{ e['Kategorie'] or '–' }}</td>
-      <td>{{ e['Sätze']|default('–', true) }}</td>
-      <td>{{ e['Wiederholungen']|default('–', true) }}</td>
-      <td>{{ (e['Gewicht (kg)'] ~ ' kg') if e['Gewicht (kg)'] else '–' }}</td>
+      <td class="mono">{{ e['Sätze']|default('–', true) }}</td>
+      <td class="mono">{{ e['Wiederholungen']|default('–', true) }}</td>
+      <td class="mono">{{ (e['Gewicht (kg)'] ~ ' kg') if e['Gewicht (kg)'] else '–' }}</td>
       <td>{{ e['Satz-Details'] or '–' }}</td>
       <td>{% if e['Bewertung'] %}<span class="badge">{{ e['Bewertung'] }}</span>{% else %}–{% endif %}</td>
       <td>{{ e['Vorschlag nächstes Mal'] or '–' }}</td>
