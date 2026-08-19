@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h1>Dashboard</h1>
+
+<div class="stat-grid">
+  <div class="stat-card">
+    <div class="stat-label">Trainings gesamt</div>
+    <div class="stat-value">{{ session_count }}</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Aktuelles Gewicht</div>
+    <div class="stat-value">{{ recent_weight['Gewicht (kg)'] if recent_weight else '–' }} kg</div>
+    <div class="stat-sub">{{ recent_weight['Datum'] if recent_weight else '' }}</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Veränderung seit Start</div>
+    {% if recent_weight and start_weight and recent_weight['Gewicht (kg)'] and start_weight['Gewicht (kg)'] %}
+      {% set diff = recent_weight['Gewicht (kg)'] - start_weight['Gewicht (kg)'] %}
+      <div class="stat-value {{ 'down' if diff < 0 else 'up' }}">{{ '%.1f'|format(diff) }} kg</div>
+      <div class="stat-sub">seit {{ start_weight['Datum'] }}</div>
+    {% else %}
+      <div class="stat-value">–</div>
+    {% endif %}
+  </div>
+</div>
+
+<section class="section">
+  <h2>Gewichtsverlauf</h2>
+  <canvas id="weightChart" height="90"></canvas>
+</section>
+
+<section class="section">
+  <div class="section-head">
+    <h2>Letzte Trainings</h2>
+    <a class="btn-link" href="{{ url_for('sessions_list') }}">Alle ansehen →</a>
+  </div>
+  {% if recent_sessions %}
+  <table class="table">
+    <thead><tr><th>Datum</th><th>Session</th><th>Ziel</th><th>Dauer</th></tr></thead>
+    <tbody>
+      {% for s in recent_sessions %}
+      <tr onclick="location.href='{{ url_for('session_detail', session_id=s['id']) }}'">
+        <td>{{ s['Datum'] }}</td>
+        <td>{{ s['Session'] }}</td>
+        <td>{% for z in s['Ziel'] %}<span class="badge">{{ z }}</span>{% endfor %}</td>
+        <td>{{ s['Dauer (Min)']|int if s['Dauer (Min)'] else '–' }} min</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="muted">Noch keine Trainings in Notion erfasst. <a href="{{ url_for('session_new') }}">Jetzt erstes Training eintragen</a>.</p>
+  {% endif %}
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+<script>loadWeightChart('weightChart');</script>
+{% endblock %}

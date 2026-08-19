@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}{{ s['Session'] }}{% endblock %}
+{% block content %}
+<div class="section-head">
+  <h1>{{ s['Session'] }}</h1>
+  <form method="post" action="{{ url_for('session_delete', session_id=s['id']) }}"
+        onsubmit="return confirm('Training in Notion archivieren? (Übungen werden mit archiviert)');">
+    <button type="submit" class="btn-danger">Archivieren</button>
+  </form>
+</div>
+
+<p class="muted">
+  {{ s['Datum'] }}
+  {% for z in s['Ziel'] %}<span class="badge">{{ z }}</span>{% endfor %}
+  {% if s['Dauer (Min)'] %} · {{ s['Dauer (Min)']|int }} min{% endif %}
+  {% if s['RPE gesamt'] %} · RPE {{ s['RPE gesamt']|int }}{% endif %}
+  {% if s['Schlaf (Std)'] %} · Schlaf {{ s['Schlaf (Std)'] }} Std{% endif %}
+</p>
+
+{% if s['Gewicht (kg)'] %}<p><strong>Körpergewicht am Trainingstag:</strong> {{ s['Gewicht (kg)'] }} kg</p>{% endif %}
+{% if s['Notizen'] %}<p><strong>Notizen:</strong> {{ s['Notizen'] }}</p>{% endif %}
+
+<p><a class="btn-link" href="{{ s['url'] }}" target="_blank">In Notion öffnen →</a></p>
+
+<h2>Übungen</h2>
+{% if exercises %}
+<table class="table">
+  <thead>
+    <tr><th>Übung</th><th>Kategorie</th><th>Sätze</th><th>Wdh</th><th>Gewicht</th><th>Details</th><th>Bewertung</th><th>Nächstes Mal</th></tr>
+  </thead>
+  <tbody>
+    {% for e in exercises %}
+    <tr>
+      <td>{{ e['Übung'] }}</td>
+      <td>{{ e['Kategorie'] or '–' }}</td>
+      <td>{{ e['Sätze']|default('–', true) }}</td>
+      <td>{{ e['Wiederholungen']|default('–', true) }}</td>
+      <td>{{ (e['Gewicht (kg)'] ~ ' kg') if e['Gewicht (kg)'] else '–' }}</td>
+      <td>{{ e['Satz-Details'] or '–' }}</td>
+      <td>{% if e['Bewertung'] %}<span class="badge">{{ e['Bewertung'] }}</span>{% else %}–{% endif %}</td>
+      <td>{{ e['Vorschlag nächstes Mal'] or '–' }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="muted">Keine Übungen erfasst.</p>
+{% endif %}
+{% endblock %}

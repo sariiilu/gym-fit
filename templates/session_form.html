@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block title %}Neues Training{% endblock %}
+{% block content %}
+<h1>Neues Training</h1>
+<p class="muted">Wird direkt in deine Notion-Datenbanken "Training Sessions" und "Trainings-Log (Übungen)" geschrieben.</p>
+
+<form method="post" class="form">
+  <div class="form-row">
+    <label>Datum
+      <input type="date" name="date" value="{{ today }}" required>
+    </label>
+    <label>Dauer (Min)
+      <input type="number" name="duration_min" min="0">
+    </label>
+    <label>Körpergewicht am Trainingstag (kg, optional)
+      <input type="number" step="0.1" name="bodyweight_kg">
+    </label>
+  </div>
+
+  <label>Session-Titel
+    <input type="text" name="title" placeholder="z.B. Gym A – Oberkörper" required>
+  </label>
+
+  <label>Ziel (Mehrfachauswahl)</label>
+  <div class="checkbox-group">
+    {% for z in ziel_options %}
+    <label class="checkbox-label"><input type="checkbox" name="ziel" value="{{ z }}"> {{ z }}</label>
+    {% endfor %}
+  </div>
+
+  <div class="form-row">
+    <label>RPE gesamt (1–10)
+      <input type="number" name="rpe" min="1" max="10">
+    </label>
+    <label>Schlaf (Std)
+      <input type="number" step="0.5" name="sleep_h">
+    </label>
+  </div>
+
+  <label>Notizen
+    <textarea name="notes" rows="2" placeholder="Ort, Energie, Auffälligkeiten"></textarea>
+  </label>
+
+  <h2>Übungen</h2>
+  <div id="exercise-rows"></div>
+  <button type="button" class="btn-secondary" onclick="addExerciseRow()">+ Übung hinzufügen</button>
+
+  <div class="form-actions">
+    <button type="submit" class="btn">Training in Notion speichern</button>
+  </div>
+</form>
+
+<template id="exercise-row-template">
+  <div class="exercise-row">
+    <input type="text" name="ex_name" placeholder="Übung *">
+    <select name="ex_kategorie">
+      <option value="">Kategorie</option>
+      {% for k in kategorie_options %}<option>{{ k }}</option>{% endfor %}
+    </select>
+    <select name="ex_typ">
+      <option value="">Typ</option>
+      {% for t in typ_options %}<option>{{ t }}</option>{% endfor %}
+    </select>
+    <input type="number" step="0.5" name="ex_saetze" placeholder="Sätze">
+    <input type="number" step="0.5" name="ex_wdh" placeholder="Wdh">
+    <input type="number" step="0.1" name="ex_gewicht" placeholder="Gewicht (kg)">
+    <input type="number" step="1" name="ex_dauer" placeholder="Dauer (Min)">
+    <input type="text" name="ex_details" placeholder="Satz-Details">
+    <select name="ex_bewertung">
+      <option value="">Bewertung</option>
+      {% for b in bewertung_options %}<option>{{ b }}</option>{% endfor %}
+    </select>
+    <input type="text" name="ex_naechstes" placeholder="Vorschlag nächstes Mal">
+    <button type="button" class="btn-remove" onclick="this.parentElement.remove()">✕</button>
+  </div>
+</template>
+
+<script>
+function addExerciseRow() {
+  const tpl = document.getElementById('exercise-row-template');
+  const clone = tpl.content.cloneNode(true);
+  document.getElementById('exercise-rows').appendChild(clone);
+}
+addExerciseRow();
+</script>
+{% endblock %}

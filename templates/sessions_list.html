@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Trainings{% endblock %}
+{% block content %}
+<div class="section-head">
+  <h1>Alle Trainings</h1>
+  <a class="btn" href="{{ url_for('session_new') }}">+ Neues Training</a>
+</div>
+
+{% if sessions %}
+<table class="table">
+  <thead><tr><th>Datum</th><th>Session</th><th>Ziel</th><th>Dauer</th><th>RPE</th></tr></thead>
+  <tbody>
+    {% for s in sessions %}
+    <tr onclick="location.href='{{ url_for('session_detail', session_id=s['id']) }}'">
+      <td>{{ s['Datum'] }}</td>
+      <td>{{ s['Session'] }}</td>
+      <td>{% for z in s['Ziel'] %}<span class="badge">{{ z }}</span>{% endfor %}</td>
+      <td>{{ s['Dauer (Min)']|int if s['Dauer (Min)'] else '–' }} min</td>
+      <td>{{ s['RPE gesamt']|int if s['RPE gesamt'] else '–' }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="muted">Noch keine Trainings in Notion erfasst.</p>
+{% endif %}
+{% endblock %}

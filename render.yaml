@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: fitness-tracker
+    env: python
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn app:app"
+    envVars:
+      - key: APP_PASSWORD
+        sync: false
+      - key: SECRET_KEY
+        generateValue: true
+      - key: NOTION_TOKEN
+        sync: false
+      - key: DS_SESSIONS
+        value: 4656ab26-ea9d-4c2c-8b5a-b34027585259
+      - key: DS_EXERCISES
+        value: 50b94877-f53d-4816-876e-76a9d9bdb763
+      - key: DS_BODYWEIGHT
+        value: 818c8f6f-69eb-4516-9454-7998a1948ba2
